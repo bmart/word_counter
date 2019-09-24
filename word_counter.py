@@ -38,17 +38,19 @@ class WordCounter(object):
         """Process a file line by line"""
         
         self.numWords = 0
-        
-        with open(args.f) as f:
-            line = f.readline()
-             
-            while line: 
-                matches = self._extractWords(line)
-                
-                self.numWords += len(matches)
-                self._computeWordList(matches)
-
+        try:
+            with open(args.f) as f:
                 line = f.readline()
+                 
+                while line: 
+                    matches = self._extractWords(line)
+                    
+                    self.numWords += len(matches)
+                    self._computeWordList(matches)
+    
+                    line = f.readline()
+        except FileNotFoundError as e:
+            print("File {} does not exist: ".format(args.f))
     
     def getWordList(self):
         """Return a summary list of words and totals"""
