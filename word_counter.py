@@ -7,43 +7,47 @@ class WordCounter(object):
     """Class to count number of words in a file or text string. Assumes files by default"""
     
     def __init__(self, fileName = None):
-        self.numWords = 0
         self.wordList = {}
         self.wordPattern = re.compile(r'[a-zA-Z\-0-9][a-zA-Z0-9\'\-]*')
         
         if fileName is not None:
             self.processFile(fileName)
     
-    def __extractWords(self,line):
+    def _extractWords(self,line):
         """tokenize a line of text into an array of words"""
         return self.wordPattern.findall(line)
     
-    def processString(self,text):
-        """process a single line of text"""
-        matches = self.__extractWords(text)
-        self.numWords = len(matches)
-        
+    def _computeWordList(self, matches):
+        """iterate through matched words and group common items"""
         for m in matches:
             if m not in self.wordList:
                 self.wordList[m] = 1
             else:
                 self.wordList[m] += 1
+    
+    def processString(self,text):
+        """process a single line of text"""
+        self.numWords = 0
+        matches = self._extractWords(text)
+        
+        self.numWords = len(matches)
+        self._computeWordList(matches)
+        
         
     def processFile(self,fileName):
         """Process a file line by line"""
+        
+        self.numWords = 0
+        
         with open(args.f) as f:
             line = f.readline()
              
             while line: 
-                matches = self.__extractWords(line)
+                matches = self._extractWords(line)
                 
                 self.numWords += len(matches)
-                
-                for m in matches:
-                    if m not in self.wordList:
-                        self.wordList[m] = 1
-                    else:
-                        self.wordList[m] += 1
+                self._computeWordList(matches)
+
                 line = f.readline()
     
     def getWordList(self):

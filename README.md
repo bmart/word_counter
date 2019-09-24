@@ -7,7 +7,8 @@ In module form, the utility will also parse a string.
 
 ## Assumptions
 
-A word is defined as a non-zero-length sequence of characters delimited by white space. Numbers also count as words although I debated including them. 
+A word is defined as a non-zero-length sequence of characters delimited by white space. Numbers also count as words although I debated including them. Code doesn't fail
+gracefully on missing filenames. Entering no arguments will output the usage info.
 
 ## Prerequisites
 
